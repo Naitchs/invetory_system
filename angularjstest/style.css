@@ -1,0 +1,36 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.modal-header {
+    background-color: #343a40;
+    color: white;
+}
+
+.modal-title {
+    color: white;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #e9ecef;
+}
+
+.btn-close {
+    filter: invert(1);
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.form-control,
+.form-select {
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    box-shadow: none;
+    border-color: #343a40;
+}

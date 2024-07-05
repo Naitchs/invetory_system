@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body ng-app="myApp" ng-controller="myCtrl as vm">
+        <!-- AngularJS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <!-- Custom JS -->
+        <script src="app.js"></script>
+
+        <div class="container mt-4">
+            <h2 class="mb-4">Tire Inventory</h2>
+            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addTireModal">Add New Tire</button>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Brand</th>
+                            <th>Type</th>
+                            <th>Size</th>
+                            <th>Inventory Items</th>
+                            <th>Location</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="tire in vm.tires" ng-click="vm.viewTire(tire)">
+                            <td>{{ tire.brand }}</td>
+                            <td>{{ tire.type }}</td>
+                            <td>{{ tire.size }}</td>
+                            <td>{{ tire.inventoryItems }}</td>
+                            <td>{{ tire.location }}</td>
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Action buttons">
+                                    <button class="btn btn-secondary btn-sm" ng-click="vm.viewTire(tire, $event)">  <i class="fas fa-eye"></i> </button> &nbsp;
+                                    <button class="btn btn-primary btn-sm" ng-click="vm.editTire(tire, $event)">  <i class="fas fa-edit"></i></button>&nbsp;
+                                    <button class="btn btn-danger btn-sm" ng-click="vm.deleteTire(tire, $event)"><i class="fas fa-trash-alt"></i> </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <!-- Add Tire Modal -->
+        <div class="modal fade" id="addTireModal" tabindex="-1" aria-labelledby="addTireModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addTireModalLabel">Add New Tire</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form ng-submit="vm.addNewTire()">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="brand" class="form-label">Brand</label>
+                                    <select class="form-select" id="brand" ng-model="vm.newTire.brand" required>
+                                        <option ng-repeat="brand in vm.brands">{{ brand }}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="type" class="form-label">Type</label>
+                                    <select class="form-select" id="type" ng-model="vm.newTire.type" required>
+                                        <option ng-repeat="type in vm.types">{{ type }}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="size" class="form-label">Size</label>
+                                    <select class="form-select" id="size" ng-model="vm.newTire.size" required>
+                                        <option ng-repeat="size in vm.sizes">{{ size }}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="inventoryItems" class="form-label">Inventory Items</label>
+                                    <input type="number" class="form-control" id="inventoryItems" ng-model="vm.newTire.inventoryItems" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="location" class="form-label">Location</label>
+                                    <select class="form-select" id="location" ng-model="vm.newTire.location" required>
+                                        <option ng-repeat="location in vm.locations">{{ location }}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="barcode" class="form-label">QR Code</label>
+                                    <input type="text" class="form-control" id="barcode" ng-model="vm.newTire.barcode" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="price" class="form-label">Product Price</label>
+                                    <input type="number" class="form-control" id="price" ng-model="vm.newTire.price" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="unitPrice" class="form-label">Unit Price</label>
+                                    <input type="number" class="form-control" id="unitPrice" ng-model="vm.newTire.unitPrice" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="tax" class="form-label">Product Tax</label>
+                                    <input type="number" class="form-control" id="tax" ng-model="vm.newTire.tax" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="discount" class="form-label">Discount</label>
+                                    <input type="number" class="form-control" id="discount" ng-model="vm.newTire.discount" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="stockAlert" class="form-label">Stock Alert</label>
+                                    <input type="number" class="form-control" id="stockAlert" ng-model="vm.newTire.stockAlert" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="expense" class="form-label">Expense</label>
+                                    <input type="number" class="form-control" id="expense" ng-model="vm.newTire.expense" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-3">Add Tire</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- View Tire Modal -->
+    <div class="modal fade" id="viewTireModal" tabindex="-1" aria-labelledby="viewTireModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewTireModalLabel">Tire Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Brand:</strong> {{ vm.selectedTire.brand }}</li> 
+                            <li class="list-group-item"><strong>Type:</strong> {{ vm.selectedTire.type }}</li>
+                            <li class="list-group-item"><strong>Size:</strong> {{ vm.selectedTire.size }}</li>
+                            <li class="list-group-item"><strong>Inventory Items:</strong> {{ vm.selectedTire.inventoryItems }}</li>
+                            <li class="list-group-item"><strong>Location:</strong> {{ vm.selectedTire.location }}</li>
+                            <li class="list-group-item"><strong>QR Code:</strong> {{ vm.selectedTire.barcode }}</li>
+                            <li class="list-group-item"><strong>Product Price:</strong> {{ vm.selectedTire.price }}</li>
+                            <li class="list-group-item"><strong>Unit Price:</strong> {{ vm.selectedTire.unitPrice }}</li>
+                            <li class="list-group-item"><strong>Product Tax:</strong> {{ vm.selectedTire.tax }}</li>
+                            <li class="list-group-item"><strong>Discount:</strong> {{ vm.selectedTire.discount }}</li>
+                            <li class="list-group-item"><strong>Stock Alert:</strong> {{ vm.selectedTire.stockAlert }}</li>
+                            <li class="list-group-item"><strong>Expense:</strong> {{ vm.selectedTire.expense }}</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- QR Code for quick access -->
+                        <div class="text-center">
+                            <img src="qr.png" alt="QR Code" class="img-fluid">
+                            <p>Scan for quick access</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </body>
+</html>
